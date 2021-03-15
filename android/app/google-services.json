@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "560070928445",
+    "project_id": "transportation-a892a",
+    "storage_bucket": "transportation-a892a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:560070928445:android:275a01101e3d7a40af6254",
+        "android_client_info": {
+          "package_name": "com.example.transportation2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "560070928445-iluc1lgopkthr12fnrc67h5kn9hem19j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8aaqbv2xBNB0b2Pf_oebAe0-s7AM5D5s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "560070928445-iluc1lgopkthr12fnrc67h5kn9hem19j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
