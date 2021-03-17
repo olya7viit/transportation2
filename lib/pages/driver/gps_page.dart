@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:transportation2/components/navigation_bar.dart';
 import 'package:transportation2/config/theme.dart';
 import 'package:transportation2/entity/firebase_user.dart';
@@ -19,10 +20,18 @@ class _Page1State extends State<Page1> {
   Widget build(BuildContext context) {
 
     double heightAppBar= screenHeight(context,dividedBy: 10);
+    GoogleMapController mapController;
+
+    final LatLng _center = const LatLng(45.521563, -122.677433);
+
+    void _onMapCreated(GoogleMapController controller) {
+      mapController = controller;
+    }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Page1"),
+        title: Text("GPS"),
+        automaticallyImplyLeading: false,
       ),
       bottomNavigationBar: SizedBox(
         height: heightAppBar,
@@ -32,7 +41,28 @@ class _Page1State extends State<Page1> {
           firebaseUser: widget.firebaseUser,
         ),
       ),
-      body: Text("Page1"),
+      body: Container(
+        child: Column(
+          children: [
+            Expanded(
+              flex: 1,
+              child: Container(
+                child: GoogleMap(
+                  onMapCreated: _onMapCreated,
+                  initialCameraPosition: CameraPosition(
+                    target: _center,
+                    zoom: 11.0,
+                  ),
+                ),
+              )
+            ),
+            Expanded(
+              flex: 1,
+              child: Container()
+            )
+          ],
+        ),
+      ),
     );
   }
 }

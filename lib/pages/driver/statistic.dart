@@ -21,7 +21,8 @@ class _Page2State extends State<Page2> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Page2"),
+        title: Text("Statistic"),
+        automaticallyImplyLeading: false,
       ),
       bottomNavigationBar: SizedBox(
         height: heightAppBar,
@@ -31,7 +32,7 @@ class _Page2State extends State<Page2> {
           firebaseUser: widget.firebaseUser,
         ),
       ),
-      body: Text("Page2"),
+      body: Text("Statistic"),
     );
   }
 }

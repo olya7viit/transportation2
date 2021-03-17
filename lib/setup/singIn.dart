@@ -3,8 +3,9 @@ import 'package:flutter/widgets.dart';
 import 'package:transportation2/components/custom_button.dart';
 import 'package:transportation2/components/text_form_field.dart';
 import 'package:transportation2/entity/firebase_user.dart';
+import 'package:transportation2/entity/role.dart';
 import 'package:transportation2/firebase/logic.dart';
-import 'package:transportation2/pages/home.dart';
+import 'file:///C:/Users/Lenovo/AndroidStudioProjects/transportation2/lib/pages/driver/home.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -80,8 +81,10 @@ class _LoginPageState extends State<LoginPage> {
             password: _password)
             .then((result) async {
           if (result != null) {
+            Role role = await FirebaseLogic.findRoleByEmail(_email);
+
             CustomFirebaseUser user = new CustomFirebaseUser(
-                email: _email, password: _password);
+                email: _email, password: _password, role: role);
 
             Navigator.push(
                 context,

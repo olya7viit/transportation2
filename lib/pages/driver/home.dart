@@ -2,26 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:transportation2/components/navigation_bar.dart';
 import 'package:transportation2/config/theme.dart';
 import 'package:transportation2/entity/firebase_user.dart';
+import 'package:transportation2/entity/role.dart';
 
-class Profile extends StatefulWidget {
-
-  final int currentTab;
+class Home extends StatefulWidget {
   final CustomFirebaseUser firebaseUser;
+  final int currentTab;
 
-  Profile({this.currentTab, this.firebaseUser});
+  Home({Key key, this.firebaseUser, @required this.currentTab,}) : super(key: key);
 
   @override
-  _ProfileState createState() => _ProfileState();
+  _HomeState createState() => _HomeState();
 }
 
-class _ProfileState extends State<Profile> {
+class _HomeState extends State<Home> with TickerProviderStateMixin {
+
   @override
   Widget build(BuildContext context) {
+
     double heightAppBar= screenHeight(context,dividedBy: 10);
+
+    String role = widget.firebaseUser.role == Role.user
+        ? "User"
+        : "Driver";
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Profile"),
+        title: Text("$role ${widget.firebaseUser.email}"),
       ),
       bottomNavigationBar: SizedBox(
         height: heightAppBar,
@@ -31,7 +37,8 @@ class _ProfileState extends State<Profile> {
           firebaseUser: widget.firebaseUser,
         ),
       ),
-      body: Text("Page4"),
+      body: Text("home"),
     );
   }
+
 }

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:gradient_bottom_navigation_bar/gradient_bottom_navigation_bar.dart';
 import 'package:motion_tab_bar/motiontabbar.dart';
 import 'package:transportation2/config/theme.dart';
 import 'package:transportation2/entity/firebase_user.dart';
-import 'package:transportation2/pages/home.dart';
-import 'package:transportation2/pages/page1.dart';
-import 'package:transportation2/pages/page2.dart';
-import 'package:transportation2/pages/timer_page.dart';
-import 'package:transportation2/pages/profile_page.dart';
+import 'package:transportation2/entity/role.dart';
+import 'package:transportation2/pages/driver/gps_page.dart';
+import 'package:transportation2/pages/driver/home.dart';
+import 'file:///C:/Users/Lenovo/AndroidStudioProjects/transportation2/lib/pages/driver/profile_page.dart';
+import 'package:transportation2/pages/driver/statistic.dart';
+import 'package:transportation2/pages/driver/timer_page.dart';
 
 class GradientBottomNavBar extends StatefulWidget {
   final CustomFirebaseUser firebaseUser;
@@ -16,8 +16,8 @@ class GradientBottomNavBar extends StatefulWidget {
 
   GradientBottomNavBar({
     @required this.currentTab,
-    this.heightBar,
-    this.firebaseUser
+    @required this.heightBar,
+    @required this.firebaseUser
   });
 
   @override
@@ -78,7 +78,7 @@ class _GradientBottomNavBarState extends State<GradientBottomNavBar> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => Profile(
+          builder: (context) => ProfileDriver(
             currentTab: index,
             firebaseUser: widget.firebaseUser,
           ),
@@ -90,68 +90,42 @@ class _GradientBottomNavBarState extends State<GradientBottomNavBar> {
   @override
   Widget build(BuildContext context) {
 
-    TextStyle style = TextStyle(fontSize: widget.heightBar * 0.18);
-
-    // return GradientBottomNavigationBar(
-    //   backgroundColorStart: AppColors.blue,
-    //   backgroundColorEnd: AppColors.blue,
-    //   type: BottomNavigationBarType.fixed,
-    //   fixedColor: AppColors.white,
-    //   iconSize: widget.heightBar * 0.35,
-    //   items: [
-    //     BottomNavigationBarItem(
-    //       activeIcon: Icon(Icons.home),
-    //       icon: Icon(Icons.home, ),
-    //       title: Text("Home", style: style),
-    //     ),
-    //     BottomNavigationBarItem(
-    //       activeIcon: Icon(Icons.car_repair),
-    //       icon:
-    //       Icon(Icons.car_repair, ),
-    //       title: Text("Page1", style: style),
-    //     ),
-    //     BottomNavigationBarItem(
-    //       activeIcon: Icon(Icons.car_repair),
-    //       icon:
-    //       Icon(Icons.car_repair, ),
-    //       title: Text("Page2", style: style),
-    //     ),
-    //     BottomNavigationBarItem(
-    //       activeIcon: Icon(Icons.timer),
-    //       icon: Icon(Icons.timer,),
-    //       title: Text("Timer", style: style),
-    //     ),
-    //     BottomNavigationBarItem(
-    //       activeIcon: Icon(Icons.person),
-    //       icon: Icon(Icons.person,),
-    //       title: Text("Profile", style: style),
-    //     ),
-    //   ],
-    //   currentIndex: widget.currentTab,
-    //   onTap: _onTap,
-    // );
+    var labelsDriver = ["Home", "GPS", "Statistic", "Timer", "Profile"];
+    var labelsUser = ["Home", "GPS", "Step Counter", "Statistic", "Profile"];
+    var iconsDriver = [Icons.home, Icons.location_on,Icons.insert_chart, Icons.timer, Icons.person];
+    var iconsUser = [Icons.home, Icons.location_on, Icons.directions_walk, Icons.insert_chart, Icons.person];
 
     return MotionTabBar(
-      labels: [
-        "Home", "Page1", "Page2", "Timer", "Profile",
-      ],
-      initialSelectedTab: getInitialSelectedTab(widget.currentTab),
+      labels: widget.firebaseUser.role == Role.user
+        ? labelsUser
+        : labelsDriver,
+      initialSelectedTab: widget.firebaseUser.role == Role.user
+          ? getInitialSelectedTabUser(widget.currentTab)
+          : getInitialSelectedTabDriver(widget.currentTab),
       tabIconColor: AppColors.blue,
       tabSelectedColor: AppColors.blue,
       onTabItemSelected: (int value){
         _onTap(value);
       },
-      icons: [
-        Icons.home,Icons.car_repair,Icons.car_repair,Icons.timer, Icons.person
-      ],
+      icons: widget.firebaseUser.role == Role.user
+          ? iconsUser
+          : iconsDriver,
       textStyle: TextStyle(color: AppColors.blue),
     );
   }
 
-  String getInitialSelectedTab(currentTab) {
+  String getInitialSelectedTabUser(currentTab) {
     return currentTab == 0 ? "Home"
-        : currentTab == 1 ? "Page1"
-        : currentTab == 2 ? "Page2"
+        : currentTab == 1 ? "GPS"
+        : currentTab == 2 ? "Step Counter"
+        : currentTab == 3 ? "Statistic"
+        :  "Profile";
+  }
+
+  String getInitialSelectedTabDriver(currentTab) {
+    return currentTab == 0 ? "Home"
+        : currentTab == 1 ? "GPS"
+        : currentTab == 2 ? "Statistic"
         : currentTab == 3 ? "Timer"
         :  "Profile";
   }
