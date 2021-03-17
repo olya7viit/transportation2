@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
+import 'package:transportation2/components/custom_button.dart';
 import 'package:transportation2/config/theme.dart';
 
 class CustomStopWatchTimer extends StatefulWidget {
@@ -17,23 +18,14 @@ class _CustomStopWatchTimerState extends State<CustomStopWatchTimer> {
   final StopWatchTimer _stopWatchTimer = StopWatchTimer(
     isLapHours: true,
     onChange: (value) => print('onChange $value'),
-    onChangeRawSecond: (value) => print('onChangeRawSecond $value'),
-    onChangeRawMinute: (value) => print('onChangeRawMinute $value'),
-  );
 
-  final _scrollController = ScrollController();
+  );
 
   @override
   void initState() {
     super.initState();
     _stopWatchTimer.rawTime.listen((value) =>
         print('rawTime $value ${StopWatchTimer.getDisplayTime(value)}'));
-    _stopWatchTimer.minuteTime.listen((value) => print('minuteTime $value'));
-    _stopWatchTimer.secondTime.listen((value) => print('secondTime $value'));
-    _stopWatchTimer.records.listen((value) => print('records $value'));
-
-    /// Can be set preset time. This case is "00:01.23".
-    // _stopWatchTimer.setPresetTime(mSec: 1234);
   }
 
   @override
@@ -44,12 +36,14 @@ class _CustomStopWatchTimerState extends State<CustomStopWatchTimer> {
 
   @override
   Widget build(BuildContext context) {
+
+    double screen_height = MediaQuery.of(context).size.height;
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          /// Display stop watch time
           Padding(
             padding: const EdgeInsets.only(bottom: 0),
             child: StreamBuilder<int>(
@@ -241,9 +235,23 @@ class _CustomStopWatchTimerState extends State<CustomStopWatchTimer> {
                 ),
               ],
             ),
+          ),
+          SizedBox(height: screen_height * 0.1,),
+          CustomButton(
+            onTap: _saveSleepTime,
+            buttonName: "Add Sleep Time",
           )
         ],
       ),
     );
+  }
+
+  _saveSleepTime() {
+    print("__________________________________");
+    print(_stopWatchTimer.rawTime.value);
+  }
+
+  double _convertTimeToMinutes(int ms){
+    return ms/0.000016666666666666667;
   }
 }

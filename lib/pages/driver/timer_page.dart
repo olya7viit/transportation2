@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:transportation2/components/custom_button.dart';
 import 'package:transportation2/components/stop_watch_timer .dart';
 import 'package:transportation2/components/navigation_bar.dart';
 import 'package:transportation2/config/theme.dart';
@@ -42,13 +43,15 @@ class _TimerState extends State<Timer> {
               "Отслеживание сна помогает сформировать наиболее полезный график сна и отдыха, избавиться от бессонницы и проблем, которые она способна принести в вашу жизнь!",
               textAlign: TextAlign.justify,
               style: TextStyle(
-                fontSize: screen_height * 0.03,
+                fontSize: screen_height * 0.025,
               ),
             ),
           ),
+          SizedBox(height: screen_height * 0.01,),
           CustomStopWatchTimer(),
         ],
       )
     );
   }
+
 }
