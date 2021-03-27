@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:transportation2/components/custom_button.dart';
 import 'package:transportation2/config/theme.dart';
+import 'package:transportation2/firebase/logic.dart';
 
 class CustomStopWatchTimer extends StatefulWidget {
-  CustomStopWatchTimer({Key key, this.title}) : super(key: key);
+  final String email;
 
-  final String title;
+  CustomStopWatchTimer({Key key, this.email}) : super(key: key);
 
   @override
   _CustomStopWatchTimerState createState() => _CustomStopWatchTimerState();
@@ -14,18 +15,16 @@ class CustomStopWatchTimer extends StatefulWidget {
 
 class _CustomStopWatchTimerState extends State<CustomStopWatchTimer> {
   final _isHours = true;
+  DateTime startTime;
+  DateTime endTime;
 
   final StopWatchTimer _stopWatchTimer = StopWatchTimer(
     isLapHours: true,
-    onChange: (value) => print('onChange $value'),
-
   );
 
   @override
   void initState() {
     super.initState();
-    _stopWatchTimer.rawTime.listen((value) =>
-        print('rawTime $value ${StopWatchTimer.getDisplayTime(value)}'));
   }
 
   @override
@@ -189,43 +188,13 @@ class _CustomStopWatchTimerState extends State<CustomStopWatchTimer> {
                           color: AppColors.blue,
                           shape: const StadiumBorder(),
                           onPressed: () async {
+                            DateTime now = DateTime.now();
+                            startTime = new DateTime(now.year, now.month, now.day, now.hour, now.minute);
                             _stopWatchTimer.onExecute
                                 .add(StopWatchExecute.start);
                           },
                           child: const Text(
                             'Start',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4),
-                        child: RaisedButton(
-                          padding: const EdgeInsets.all(4),
-                          color: AppColors.blue,
-                          shape: const StadiumBorder(),
-                          onPressed: () async {
-                            _stopWatchTimer.onExecute
-                                .add(StopWatchExecute.stop);
-                          },
-                          child: const Text(
-                            'Stop',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4),
-                        child: RaisedButton(
-                          padding: const EdgeInsets.all(4),
-                          color: AppColors.blue,
-                          shape: const StadiumBorder(),
-                          onPressed: () async {
-                            _stopWatchTimer.onExecute
-                                .add(StopWatchExecute.reset);
-                          },
-                          child: const Text(
-                            'Reset',
                             style: TextStyle(color: Colors.white),
                           ),
                         ),
@@ -247,11 +216,13 @@ class _CustomStopWatchTimerState extends State<CustomStopWatchTimer> {
   }
 
   _saveSleepTime() {
-    print("__________________________________");
-    print(_stopWatchTimer.rawTime.value);
+    DateTime now = DateTime.now();
+    endTime = new DateTime(now.year, now.month, now.day, now.hour, now.minute);
+    print(_convertTimeToHours(_stopWatchTimer.rawTime.value));
+    //FirebaseLogic.addSleepInfoForDriver(widget.email);
   }
 
-  double _convertTimeToMinutes(int ms){
-    return ms/0.000016666666666666667;
+  double _convertTimeToHours(int ms){
+    return ms * 0.000016666666666666667/60;
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:transportation2/components/custom_button.dart';
 import 'package:transportation2/components/stop_watch_timer .dart';
 import 'package:transportation2/components/navigation_bar.dart';
 import 'package:transportation2/config/theme.dart';
@@ -48,7 +47,7 @@ class _TimerState extends State<Timer> {
             ),
           ),
           SizedBox(height: screen_height * 0.01,),
-          CustomStopWatchTimer(),
+          CustomStopWatchTimer(email: widget.firebaseUser.email),
         ],
       )
     );

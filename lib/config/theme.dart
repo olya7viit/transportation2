@@ -5,6 +5,7 @@ class AppColors{
   static Color lightBlue = Colors.blue[200];
   static const white = Colors.white;
   static const dart = Colors.black12;
+  static const black = Colors.black;
 }
 
 Size screenSize(BuildContext context) {

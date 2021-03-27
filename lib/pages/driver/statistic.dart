@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:transportation2/components/navigation_bar.dart';
+import 'package:transportation2/components/sleep_statistics.dart';
 import 'package:transportation2/config/theme.dart';
 import 'package:transportation2/entity/firebase_user.dart';
 
@@ -32,7 +33,7 @@ class _Page2State extends State<Page2> {
           firebaseUser: widget.firebaseUser,
         ),
       ),
-      body: Text("Statistic"),
+      body: SleepStatistic(),
     );
   }
 }

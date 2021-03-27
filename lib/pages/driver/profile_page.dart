@@ -29,7 +29,6 @@ class _ProfileDriverState extends State<ProfileDriver> {
     widget.firebaseUser.role == Role.user
       ? role = "USER"
       : role = "DRIVER";
-    futureDriver = FirebaseLogic.getDriverByEmail(widget.firebaseUser.email);
   }
 
   @override
@@ -58,7 +57,7 @@ class _ProfileDriverState extends State<ProfileDriver> {
           Expanded(
               flex: 3,
               child: FutureBuilder(
-                future: FirebaseLogic.getDriverByEmail2(widget.firebaseUser.email),
+                future: FirebaseLogic.getDriverByEmail(widget.firebaseUser.email),
                 builder: (context, snapshot) {
                   if( snapshot.connectionState == ConnectionState.waiting){
                     return  Center(child: Text('Please wait its loading...'));

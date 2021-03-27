@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:transportation2/entity/driver.dart';
+import 'package:transportation2/entity/order.dart';
 import 'package:transportation2/entity/role.dart';
+import 'package:transportation2/entity/segment.dart';
 
 class FirebaseLogic {
   static Future<User> signInWithEmailAndPassword({String email, String password}) async {
@@ -19,15 +20,7 @@ class FirebaseLogic {
     }
   }
 
-  static Future<Driver> getDriverByEmail(String email) async {
-    CollectionReference ref = FirebaseFirestore.instance.collection('drivers');
-    QuerySnapshot snapshot = await ref
-        .where("email", isEqualTo: email)
-        .get();
-    return Driver.fromMap(snapshot.docs[0].data());
-  }
-
-  static Future getDriverByEmail2(String email) async {
+  static Future getDriverByEmail(String email) async {
     CollectionReference ref = FirebaseFirestore.instance.collection('drivers');
     QuerySnapshot snapshot = await ref
         .where("email", isEqualTo: email)
@@ -37,7 +30,6 @@ class FirebaseLogic {
 
   static Future<Role> findRoleByEmail(String email) async {
     CollectionReference ref = FirebaseFirestore.instance.collection('roles');
-    print(ref.id.length);
     QuerySnapshot snapshot = await ref
         .where("email", isEqualTo: email)
         .get();
@@ -45,4 +37,52 @@ class FirebaseLogic {
         ? Role.user
         : Role.driver;
   }
+
+  static Future<void> addSleepInfoForDriver({String driverId, Map<String, dynamic> sleepInfo}) async {
+    var array = ["item1", "item2"];
+    await FirebaseFirestore.instance
+        .collection('drivers')
+        .doc(driverId)
+        .set({"myArray": array})
+        .catchError((e) {
+      print(e.toString());
+    });
+  }
+
+
+  ///////////////////                 order            ///////////////////////////////////////////////////
+
+  static Future<List<Order>> getListOrdersByDriverEmail(String email) async {
+    Order _order;
+    List<Order> _listOrders = [];
+    return await FirebaseFirestore.instance
+        .collection('orders')
+    //.where("email", isEqualTo: "email")
+        .get()
+        .then((value) {
+      if (value.docs.isNotEmpty) {
+        value.docs.forEach((element) async {
+          _order = Order.fromMap(element.data());
+          _listOrders.add(_order);
+        });
+        return _listOrders;
+      } else {
+        return _listOrders;
+      }
+    }).catchError((e) {
+      print(e.toString());
+      return _listOrders;
+    });
+  }
+
+  static Future<void> updateOrder(Order order) async {
+    FirebaseFirestore.instance
+        .collection('orders')
+        .doc(order.id)
+        .update(order.toMap()).catchError((e) {
+      print("OOps");
+    });
+  }
+
+
 }
