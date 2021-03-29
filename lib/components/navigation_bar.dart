@@ -5,9 +5,11 @@ import 'package:transportation2/entity/firebase_user.dart';
 import 'package:transportation2/entity/role.dart';
 import 'package:transportation2/pages/driver/gps_page.dart';
 import 'package:transportation2/pages/driver/home.dart';
-import 'file:///C:/Users/Lenovo/AndroidStudioProjects/transportation2/lib/pages/driver/profile_page.dart';
+
 import 'package:transportation2/pages/driver/statistic.dart';
 import 'package:transportation2/pages/driver/timer_page.dart';
+
+import '../pages/driver/profile_page.dart';
 
 class GradientBottomNavBar extends StatefulWidget {
   final CustomFirebaseUser firebaseUser;
