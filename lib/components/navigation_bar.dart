@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:motion_tab_bar/motiontabbar.dart';
+
 import 'package:transportation2/config/theme.dart';
 import 'package:transportation2/entity/firebase_user.dart';
 import 'package:transportation2/entity/role.dart';
@@ -10,6 +10,7 @@ import 'package:transportation2/pages/driver/statistic.dart';
 import 'package:transportation2/pages/driver/timer_page.dart';
 
 import '../pages/driver/profile_page.dart';
+import 'navigateBar.dart';
 
 class GradientBottomNavBar extends StatefulWidget {
   final CustomFirebaseUser firebaseUser;
