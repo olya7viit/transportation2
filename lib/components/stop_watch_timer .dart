@@ -35,7 +35,6 @@ class _CustomStopWatchTimerState extends State<CustomStopWatchTimer> {
 
   @override
   Widget build(BuildContext context) {
-
     double screen_height = MediaQuery.of(context).size.height;
 
     return Center(
@@ -51,7 +50,7 @@ class _CustomStopWatchTimerState extends State<CustomStopWatchTimer> {
               builder: (context, snap) {
                 final value = snap.data;
                 final displayTime =
-                StopWatchTimer.getDisplayTime(value, hours: _isHours);
+                    StopWatchTimer.getDisplayTime(value, hours: _isHours);
                 return Column(
                   children: <Widget>[
                     Padding(
@@ -108,7 +107,7 @@ class _CustomStopWatchTimerState extends State<CustomStopWatchTimer> {
                             ),
                             Padding(
                               padding:
-                              const EdgeInsets.symmetric(horizontal: 4),
+                                  const EdgeInsets.symmetric(horizontal: 4),
                               child: Text(
                                 value.toString(),
                                 style: const TextStyle(
@@ -153,7 +152,7 @@ class _CustomStopWatchTimerState extends State<CustomStopWatchTimer> {
                             ),
                             Padding(
                               padding:
-                              const EdgeInsets.symmetric(horizontal: 4),
+                                  const EdgeInsets.symmetric(horizontal: 4),
                               child: Text(
                                 value.toString(),
                                 style: const TextStyle(
@@ -189,7 +188,8 @@ class _CustomStopWatchTimerState extends State<CustomStopWatchTimer> {
                           shape: const StadiumBorder(),
                           onPressed: () async {
                             DateTime now = DateTime.now();
-                            startTime = new DateTime(now.year, now.month, now.day, now.hour, now.minute);
+                            startTime = new DateTime(now.year, now.month,
+                                now.day, now.hour, now.minute);
                             _stopWatchTimer.onExecute
                                 .add(StopWatchExecute.start);
                           },
@@ -205,7 +205,33 @@ class _CustomStopWatchTimerState extends State<CustomStopWatchTimer> {
               ],
             ),
           ),
-          SizedBox(height: screen_height * 0.1,),
+          SizedBox(
+            height: screen_height * 0.04,
+          ),
+          endTime != null
+              ? Column(
+                  children: [
+                    Container(
+                      child: Text(
+                        "Ваше послдение время сна:",
+                        style: TextStyle(
+                          fontSize: screen_height * 0.025,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: screen_height * 0.005,
+                    ),
+                    Text('${startTime} - $endTime',
+                      style: TextStyle(
+                        fontSize: screen_height * 0.02,
+                      ),),
+                    SizedBox(
+                      height: screen_height * 0.04,
+                    ),
+                  ],
+                )
+              : SizedBox(),
           CustomButton(
             onTap: _saveSleepTime,
             buttonName: "Add Sleep Time",
@@ -218,11 +244,13 @@ class _CustomStopWatchTimerState extends State<CustomStopWatchTimer> {
   _saveSleepTime() {
     DateTime now = DateTime.now();
     endTime = new DateTime(now.year, now.month, now.day, now.hour, now.minute);
+    print(endTime);
     print(_convertTimeToHours(_stopWatchTimer.rawTime.value));
-    //FirebaseLogic.addSleepInfoForDriver(widget.email);
+    _stopWatchTimer.onExecute.add(StopWatchExecute.stop);
+    setState(() {}); //FirebaseLogic.addSleepInfoForDriver(widget.email);
   }
 
-  double _convertTimeToHours(int ms){
-    return ms * 0.000016666666666666667/60;
+  double _convertTimeToHours(int ms) {
+    return ms * 0.000016666666666666667 / 60;
   }
 }

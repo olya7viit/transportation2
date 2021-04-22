@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:transportation2/components/custom_button.dart';
 import 'package:transportation2/components/text_form_field.dart';
+import 'package:transportation2/config/theme.dart';
 import 'package:transportation2/entity/firebase_user.dart';
 import 'package:transportation2/entity/role.dart';
 import 'package:transportation2/firebase/logic.dart';
@@ -15,7 +16,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
+String errorEmail ='null';
+String errorPassword='null';
   String _email, _password;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -27,26 +29,32 @@ class _LoginPageState extends State<LoginPage> {
         key: _formKey,
         child: Column(
           children: <Widget>[
-            TextFormRegister(
-              labelText: "Email",
-              validator: validateEmail,
-              /*validator: (input) {
-                if(input.IsEmpty){
-                  return "Please type an email";
-                }
-              },*/
-              chooseValue: saveEmail,
+            SizedBox(height: 200),
+            CustomInputField(
+             // key: emailKey,
+             // controller: emailController,
+              label: 'E-mail',
+             hint: 'E-mail',
+             error: errorEmail,
+             // validator: Validator.validateEmail,
+              keyboard: TextInputType.emailAddress,
+              hasTopMargin: false,
+              onValueChanged: saveEmail,
             ),
-            TextFormRegister(
-              labelText: "Password",
-              validator: validatePassword,
-              /*validator: (input) {
-                if(input.IsEmpty){
-                  return "Your password needs to be atleast 6 characters";
-                }
-              },*/
-              chooseValue: savePassword,
+            SizedBox(height: 20),
+            CustomInputField(
+              error: errorPassword,
+              hint: 'Password',
+          //   key: passwordKey,
+             // controller: passwordController,
+              label: '*Passwort',
+             // validator: Validator.passwordCorrect,
+              keyboard: TextInputType.visiblePassword,
+              isPassword: true,
+              hasTopMargin: false,
+              onValueChanged: savePassword,
             ),
+            SizedBox(height: 20),
             CustomButton(
               onTap: _signIn,
               buttonName: "Sing in",),
@@ -74,7 +82,12 @@ class _LoginPageState extends State<LoginPage> {
 
   void _signIn() async {
     final _formState = _formKey.currentState;
-    if (validateEmail(_email) == null) {
+    if(validateEmail(_email) != null||validatePassword(_password)!=null){
+      setState(() {
+
+      });
+    }
+    if (validateEmail(_email) == null&&validatePassword(_password)==null) {
       if(_formState.validate()){
         _formState.save();
         await FirebaseLogic
@@ -93,22 +106,42 @@ class _LoginPageState extends State<LoginPage> {
                 MaterialPageRoute(builder: (context) => Home(firebaseUser: user, currentTab: 0,),)
             );
           }
+          else
+          {
+            errorPassword='Неверный логин или пароль';
+            setState(() {
+
+            });
+          }
         });
        }
     }
   }
 
   String validateEmail(dynamic value) {
-    if (value.length == 0) {
-      return "email обязателен";
+    if(value==null){
+      errorEmail = "Email обязателен";
+      return "Email обязателен";
     }
+    if (value.length == 0) {
+      errorEmail = "Email обязателен";
+      return "Email обязателен";
+    }
+    errorEmail = 'null';
     return null;
   }
 
   String validatePassword(dynamic value) {
-    if (value.length == 0) {
-      return "пароль обязателен";
+    print('ddd');
+    if(value==null){
+      errorPassword= "Пароль обязателен";
+      return "Пароль обязателен";
     }
+    if (value.length == 0) {
+      errorPassword= "Пароль обязателен";
+      return "Пароль обязателен";
+    }
+    errorEmail = "null";
     return null;
   }
 
